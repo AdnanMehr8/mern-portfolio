@@ -23,6 +23,12 @@ app.use('/api/portfolio', portfolioRoute);
 
 
 const port = process.env.PORT || 5000;
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "client/build")));
+  app.get("*", (req, res) => {
+      res.sendFile(path.join(__dirname, "client/build/index.html"));
+  });
+}
 const server = http.createServer(app);
 mongoose.connect(process.env.mongo_url).then(() => {
   console.log("Mongodb connected");
